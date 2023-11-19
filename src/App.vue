@@ -2,12 +2,14 @@
 import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
+import HomeLayout from "./layouts/HomeLayout.vue";
 
 const drawer = ref(false);
 </script>
 
 <template>
-  <div class="wrapper d-flex">
+  <HomeLayout />
+  <!-- <div class="wrapper d-flex">
     <nav>
       <v-layout>
         <v-navigation-drawer
@@ -38,6 +40,7 @@ const drawer = ref(false);
     </nav>
     <main>
       <div class="wrapper">
+        <RouterView />
         <HelloWorld msg="You did it!" />
         <nav>
           <RouterLink to="/">Home</RouterLink>
@@ -45,9 +48,7 @@ const drawer = ref(false);
         </nav>
       </div>
     </main>
-  </div>
-
-  <RouterView />
+  </div> -->
 </template>
 
 <style></style>
