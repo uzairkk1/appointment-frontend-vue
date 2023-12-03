@@ -1,6 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import LoginView from "../views/LoginView.vue";
+import RegisterView from "../views/RegisterView.vue";
+
 import HomeLayout from "../layouts/HomeLayout.vue";
+import AuthLayout from "../layouts/AuthLayout.vue";
+
+import { useAuthStore } from "../stores/Auth";
+import { storeToRefs } from "pinia";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +16,19 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
-      meta: { layout: HomeLayout },
+      meta: { layout: HomeLayout, requiresAuth: true },
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: LoginView,
+      meta: { layout: AuthLayout },
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: RegisterView,
+      meta: { layout: AuthLayout },
     },
     {
       path: "/about",
@@ -21,6 +40,21 @@ const router = createRouter({
       meta: { layout: HomeLayout },
     },
   ],
+});
+
+router.beforeEach(async (to, from) => {
+  const auth = useAuthStore();
+
+  const { isAuthenticated } = storeToRefs(auth);
+
+  if (
+    // make sure the user is authenticated
+    to.meta.requiresAuth &&
+    !isAuthenticated.value
+  ) {
+    // redirect the user to the login page
+    return { name: "login" };
+  }
 });
 
 export default router;

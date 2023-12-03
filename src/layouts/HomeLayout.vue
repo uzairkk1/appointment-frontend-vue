@@ -41,18 +41,16 @@ watch(
 </script>
 <template>
   <v-app>
-    <v-layout class="rounded rounded-md">
-      <SideBar
-        @update-nav="onUpdateNav"
-        :is-md-up="display.mdAndUp.value"
-        :rails="isNavRail"
-        :open="isNavOpen"
-      />
-      <AppBar @update-nav="onUpdateNav" :is-sm-down="display.smAndDown.value" />
+    <SideBar
+      @update-nav="onUpdateNav"
+      :is-md-up="display.mdAndUp.value"
+      :rails="isNavRail"
+      :open="isNavOpen"
+    />
+    <AppBar @update-nav="onUpdateNav" :is-sm-down="display.smAndDown.value" />
 
-      <v-main>
-        <slot></slot>
-      </v-main>
-    </v-layout>
+    <v-main name="V-MAINS">
+      <slot></slot>
+    </v-main>
   </v-app>
 </template>

@@ -18,6 +18,7 @@ const getDrawerVal = () => {
     expand-on-hover
     :rail="rails"
     mobile-breakpoint="sm"
+    name="V-Nav"
     @update:modelValue="updateNavState"
   >
     <v-list>
