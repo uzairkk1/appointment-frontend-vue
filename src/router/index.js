@@ -42,19 +42,22 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
 
-  const { isAuthenticated } = storeToRefs(auth);
+  const { isAuthenticated, isRefreshing } = storeToRefs(auth);
 
   if (
     // make sure the user is authenticated
     to.meta.requiresAuth &&
-    !isAuthenticated.value
+    !isAuthenticated.value &&
+    !isRefreshing.value
   ) {
     // redirect the user to the login page
     return { name: "login" };
   }
+
+  next();
 });
 
 export default router;

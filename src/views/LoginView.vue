@@ -8,6 +8,10 @@ import {
 } from "vee-validate";
 import * as yup from "yup";
 
+import { useAuthStore } from "../stores/Auth";
+
+const authStore = useAuthStore();
+
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
     email: yup
@@ -32,8 +36,16 @@ const isDisabled = computed(() => {
 const password = useField("password");
 const email = useField("email");
 
-const submit = handleSubmit((values) => {
+const submit = handleSubmit(async (values) => {
   alert(JSON.stringify(values, null, 2));
+
+  const { email, password } = values;
+  try {
+    const res = await authStore.login(email, password);
+    debugger;
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 const loading = ref(false);

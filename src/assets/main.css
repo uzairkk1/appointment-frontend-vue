@@ -22,3 +22,49 @@
   height: 50px;
   background-color: aqua;
 }
+
+/* HTML: <div class="loader"></div> */
+.loader__wrapper {
+  position: absolute;
+}
+.loader__overlay {
+  background: #00000094;
+  position: inherit;
+  z-index: 9999;
+}
+.loader {
+  width: 17px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  animation: l22-0 2s infinite linear;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  grid-area: 1/1;
+  margin: 15%;
+  border-radius: 50%;
+  background: inherit;
+  transform: rotate(0deg) translate(150%);
+  animation: l22 1s infinite;
+}
+.loader:after {
+  animation-delay: -0.5s;
+}
+@keyframes l22-0 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+@keyframes l22 {
+  100% {
+    transform: rotate(1turn) translate(150%);
+  }
+}

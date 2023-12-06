@@ -1,16 +1,18 @@
 <script setup>
-import { ref } from "vue";
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
-import HomeLayout from "./layouts/HomeLayout.vue";
-
-const drawer = ref(false);
+import SpinnerLoader from "./components/SpinnerLoader.vue";
+import MainComp from "./Main.vue";
 </script>
 
 <template>
-  <component :is="$route.meta.layout || 'div'">
-    <RouterView />
-  </component>
+  <Suspense>
+    <template #default>
+      <MainComp />
+    </template>
+    <template #fallback>
+      <!-- Fallback content while the async operation is in progress -->
+      <SpinnerLoader />
+    </template>
+  </Suspense>
 </template>
 
 <style></style>

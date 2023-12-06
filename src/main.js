@@ -21,10 +21,17 @@ const vuetify = createVuetify({
   },
 });
 
-const app = createApp(App);
+startApp();
 
-app.use(createPinia());
-app.use(router);
-app.use(vuetify);
+async function startApp() {
+  const app = createApp(App);
+  // const pinia = ;
+  // pinia.use(({ store }) => {
+  //   store.router = markRaw(router);
+  // });
+  app.use(createPinia());
 
-app.mount("#app");
+  app.use(vuetify);
+  app.use(router);
+  app.mount("#app");
+}
