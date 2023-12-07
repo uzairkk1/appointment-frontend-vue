@@ -8,9 +8,7 @@ import {
 } from "vee-validate";
 import * as yup from "yup";
 
-import { useAuthStore } from "../stores/Auth";
-
-const authStore = useAuthStore();
+import { useLogin } from "./../composables/useLogin";
 
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
@@ -36,16 +34,14 @@ const isDisabled = computed(() => {
 const password = useField("password");
 const email = useField("email");
 
+const { isLoading, signIn } = useLogin();
+
 const submit = handleSubmit(async (values) => {
   alert(JSON.stringify(values, null, 2));
 
   const { email, password } = values;
-  try {
-    const res = await authStore.login(email, password);
-    debugger;
-  } catch (err) {
-    console.log(err);
-  }
+
+  signIn({ email, password });
 });
 
 const loading = ref(false);
@@ -77,8 +73,8 @@ const loading = ref(false);
           <br />
 
           <v-btn
-            :disabled="isDisabled"
-            :loading="loading"
+            :disabled="isDisabled || isLoading"
+            :loading="isLoading"
             block
             color="success"
             size="large"

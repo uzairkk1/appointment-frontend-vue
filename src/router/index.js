@@ -6,8 +6,8 @@ import RegisterView from "../views/RegisterView.vue";
 import HomeLayout from "../layouts/HomeLayout.vue";
 import AuthLayout from "../layouts/AuthLayout.vue";
 
-import { useAuthStore } from "../stores/Auth";
-import { storeToRefs } from "pinia";
+import { useQueryClient } from "@tanstack/vue-query";
+import { getCurrentUser } from "../services/apiAuth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +15,13 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
+      redirect: "/appointments",
+      component: HomeView,
+      meta: { layout: HomeLayout, requiresAuth: true },
+    },
+    {
+      path: "/appointments",
+      name: "appointments",
       component: HomeView,
       meta: { layout: HomeLayout, requiresAuth: true },
     },
@@ -39,25 +46,44 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
       meta: { layout: HomeLayout },
     },
+    {
+      path: "/doctors",
+      name: "doctors",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/AboutView.vue"),
+      meta: { layout: HomeLayout },
+    },
   ],
 });
 
 router.beforeEach(async (to, from, next) => {
-  const auth = useAuthStore();
+  if (to.meta.requiresAuth) {
+    //using fetch query from query client since useQuery wont work here (only works where ) composables will only run if there is inject available
+    const queryClient = useQueryClient();
 
-  const { isAuthenticated, isRefreshing } = storeToRefs(auth);
+    let data = null;
+    try {
+      data = await queryClient.fetchQuery({
+        queryKey: ["user"],
+        queryFn: getCurrentUser,
+      });
 
-  if (
-    // make sure the user is authenticated
-    to.meta.requiresAuth &&
-    !isAuthenticated.value &&
-    !isRefreshing.value
-  ) {
-    // redirect the user to the login page
-    return { name: "login" };
+      if (data == undefined) {
+        // redirect the user to the login page
+        next({ name: "login" });
+      } else {
+        next();
+      }
+    } catch (error) {
+      console.log(error);
+      // redirect the user to the login page
+      next({ name: "login" });
+    }
+  } else {
+    next();
   }
-
-  next();
 });
 
 export default router;

@@ -1,6 +1,6 @@
 <script setup>
-import { defineEmits, defineProps } from "vue";
-
+import { defineEmits, defineProps, onMounted } from "vue";
+import { useQueryClient } from "@tanstack/vue-query";
 const emit = defineEmits(["updateNav"]);
 const props = defineProps(["isMdUp", "open", "rails"]);
 
@@ -11,6 +11,40 @@ const updateNavState = (state) => {
 const getDrawerVal = () => {
   return props.isMdUp || props.open;
 };
+
+const menuItems = [
+  {
+    icon: "mdi-book-account-outline",
+    title: "Appointments",
+    value: "/appointments",
+    show: true,
+  },
+  {
+    icon: "mdi-doctor",
+    title: "Doctors",
+    value: "/doctors",
+    show: true,
+  },
+  {
+    icon: "mdi-card-account-details-outline",
+    title: "Apply for Doctor",
+    value: "/apply-doctors",
+    show: true,
+  },
+  {
+    id: 0,
+    icon: "mdi-logout",
+    title: "Logout",
+    value: "/logout",
+    show: true,
+  },
+];
+let user = { name: "test", email: "test" };
+onMounted(() => {
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData(["user"]);
+  user = data.user;
+});
 </script>
 <template>
   <v-navigation-drawer
@@ -23,30 +57,26 @@ const getDrawerVal = () => {
   >
     <v-list>
       <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-        title="Sandra Adams"
-        subtitle="sandra_a88@gmailcom"
+        prepend-avatar="https://randomuser.me/api/portraits/lego/3.jpg"
+        :title="user.name"
+        :subtitle="user.email"
       ></v-list-item>
     </v-list>
 
     <v-divider></v-divider>
 
     <v-list density="compact" nav>
-      <v-list-item
-        prepend-icon="mdi-folder"
-        title="My Files"
-        value="myfiles"
-      ></v-list-item>
-      <v-list-item
-        prepend-icon="mdi-account-multiple"
-        title="Shared with me"
-        value="shared"
-      ></v-list-item>
-      <v-list-item
-        prepend-icon="mdi-star"
-        title="Starred"
-        value="starred"
-      ></v-list-item>
+      <template :key="item.value" v-for="item in menuItems">
+        <v-list-item
+          active-class="active-route"
+          :prepend-icon="item.icon"
+          :value="item.value"
+          :title="item.title"
+          :to="item.value"
+          :exact="true"
+        >
+        </v-list-item>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
