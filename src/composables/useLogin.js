@@ -8,9 +8,9 @@ export function useLogin() {
   const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
 
-  const { mutate: signIn, isLoading } = useMutation({
+  const { mutate: signIn, isPending } = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: ({ data }) => {
       queryClient.setQueryData(["user"], { user: data?.user });
       //store user details in LS for persistance
       localStorage.setItem(
@@ -36,5 +36,5 @@ export function useLogin() {
   });
 
   // expose managed state as return value
-  return { signIn, isLoading };
+  return { signIn, isPending };
 }

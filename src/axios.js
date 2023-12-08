@@ -17,21 +17,21 @@ if (userDetails) {
 axiosI.defaults.headers.common["Authorization"] =
   `Bearer ${userDetails?.accessToken}` || "";
 
-axiosI.interceptors.request.use((config) => {
-  let appStore = useAppStore();
-  appStore.enableLoading();
-  return config;
-});
+// axiosI.interceptors.request.use((config) => {
+//   let appStore = useAppStore();
+//   appStore.enableLoading();
+//   return config;
+// });
 
 axiosI.interceptors.response.use(
   (res) => {
-    let appStore = useAppStore();
-    appStore.disableLoading();
+    // let appStore = useAppStore();
+    // appStore.disableLoading();
     return Promise.resolve(res);
   },
   async (error) => {
-    let appStore = useAppStore();
-    appStore.disableLoading();
+    // let appStore = useAppStore();
+    // appStore.disableLoading();
 
     const originalRequest = error.config;
     const isTokenExpired = ["Your token has expired!", "jwt expired"].some(

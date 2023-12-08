@@ -1,7 +1,7 @@
 import axios from "../axios";
 
 export async function login({ email, password }) {
-  const { data } = await axios.post(
+  return await axios.post(
     `/users/auth/login`,
     {
       email,
@@ -15,13 +15,36 @@ export async function login({ email, password }) {
     }
   );
 
-  return data;
+  //   return data;
+}
+export async function register({ name, email, password, confirmPassword }) {
+  return await axios.post(
+    `/users/auth/register`,
+    {
+      name,
+      email,
+      password,
+      confirmPassword,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    }
+  );
+
+  //   return data;
 }
 export async function refreshToken() {
   const { data } = await axios.get(`/users/auth/refresh`, {
     withCredentials: true,
   });
   return data;
+}
+
+export async function verifyEmail(token) {
+  return axios.get(`users/auth/emailverification/${token}`);
 }
 
 export async function getCurrentUser() {

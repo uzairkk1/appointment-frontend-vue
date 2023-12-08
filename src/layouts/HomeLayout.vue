@@ -49,7 +49,7 @@ watch(
     />
     <AppBar @update-nav="onUpdateNav" :is-sm-down="display.smAndDown.value" />
 
-    <v-main name="V-MAINS">
+    <v-main>
       <slot></slot>
     </v-main>
   </v-app>

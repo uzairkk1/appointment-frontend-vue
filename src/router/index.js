@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import VerifyEmailView from "../views/VerifyEmailView.vue";
 
 import HomeLayout from "../layouts/HomeLayout.vue";
 import AuthLayout from "../layouts/AuthLayout.vue";
@@ -35,6 +36,12 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: RegisterView,
+      meta: { layout: AuthLayout },
+    },
+    {
+      path: "/verify/:token",
+      name: "verify",
+      component: VerifyEmailView,
       meta: { layout: AuthLayout },
     },
     {

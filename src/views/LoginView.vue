@@ -34,11 +34,9 @@ const isDisabled = computed(() => {
 const password = useField("password");
 const email = useField("email");
 
-const { isLoading, signIn } = useLogin();
+const { isPending, signIn } = useLogin();
 
 const submit = handleSubmit(async (values) => {
-  alert(JSON.stringify(values, null, 2));
-
   const { email, password } = values;
 
   signIn({ email, password });
@@ -73,15 +71,21 @@ const loading = ref(false);
           <br />
 
           <v-btn
-            :disabled="isDisabled || isLoading"
-            :loading="isLoading"
+            :disabled="isDisabled || isPending"
+            :loading="isPending"
             block
             color="success"
             size="large"
             type="submit"
             variant="elevated"
           >
-            Sign In
+            {{ isPending ? "Loading..." : "Sign In" }}
+            <!-- <template v-slot:loader>
+              <v-progress-circular
+                color="teal"
+                indeterminate
+              ></v-progress-circular>
+            </template> -->
           </v-btn>
         </v-form>
       </v-card>
