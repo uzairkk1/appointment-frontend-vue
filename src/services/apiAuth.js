@@ -33,9 +33,27 @@ export async function register({ name, email, password, confirmPassword }) {
       withCredentials: true,
     }
   );
-
-  //   return data;
 }
+export async function registerDoctor({
+  name,
+  email,
+  password,
+  confirmPassword,
+}) {
+  return await axios.post(`/users/auth/doctor/register`, {
+    name,
+    email,
+    password,
+    confirmPassword,
+  });
+}
+
+export async function updateDocProfile({ id, bodyData }) {
+  return await axios.post(`/users//doctor/update/${id}`, {
+    ...bodyData,
+  });
+}
+
 export async function refreshToken() {
   const { data } = await axios.get(`/users/auth/refresh`, {
     withCredentials: true,
@@ -53,11 +71,10 @@ export async function getCurrentUser() {
   if (userDetails) userDetails = JSON.parse(userDetails);
 
   if (userDetails.accessToken && userDetails.user != undefined) {
-    data = { user: userDetails.user };
+    data = { ...userDetails.user };
   } else if (userDetails.accessToken && userDetails.user == undefined) {
-    let { data: apiData } = await axios.get(`/auth/getCurrentUser`);
-
-    data = apiData;
+    let { data: apiData } = await axios.get(`users/auth/getCurrentUser`);
+    data = { ...apiData.user };
   } else {
     data = null;
   }

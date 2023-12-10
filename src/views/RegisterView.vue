@@ -9,6 +9,10 @@ import {
 import * as yup from "yup";
 
 import { useRegister } from "./../composables/useRegister";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const isDoctorRegistration = route.path.includes("/doctor");
 
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
@@ -44,7 +48,7 @@ const confirmPassword = useField("confirmPassword");
 const email = useField("email");
 const name = useField("name");
 
-const { isPending, signUp } = useRegister();
+const { isPending, signUp } = useRegister(isDoctorRegistration);
 
 const submit = handleSubmit(async (values) => {
   const { email, password, name, confirmPassword } = values;

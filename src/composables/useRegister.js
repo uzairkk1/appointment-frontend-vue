@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
-import { register } from "../services/apiAuth";
+import { register, registerDoctor } from "../services/apiAuth";
 import { useSnackbar } from "./useSnackbar";
 // by convention, composable function names start with "use"
-export function useRegister() {
+export function useRegister(isDoctorRegistration) {
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
 
   const { mutate: signUp, isPending } = useMutation({
-    mutationFn: register,
+    mutationFn: isDoctorRegistration ? registerDoctor : register,
     onSuccess: () => {
       showSnackbar({
         text: "Signup successfull, Please confirm your email by clicking the link sent to you in email",

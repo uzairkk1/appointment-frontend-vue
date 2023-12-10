@@ -11,7 +11,7 @@ export function useLogin() {
   const { mutate: signIn, isPending } = useMutation({
     mutationFn: login,
     onSuccess: ({ data }) => {
-      queryClient.setQueryData(["user"], { user: data?.user });
+      queryClient.setQueryData(["user"], { ...data.user });
       //store user details in LS for persistance
       localStorage.setItem(
         "user_details",

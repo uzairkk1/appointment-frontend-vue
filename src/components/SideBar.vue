@@ -28,7 +28,7 @@ const menuItems = [
   {
     icon: "mdi-card-account-details-outline",
     title: "Apply for Doctor",
-    value: "/apply-doctors",
+    value: "/update/doctor",
     show: true,
   },
   {
@@ -43,7 +43,7 @@ let user = { name: "test", email: "test" };
 onMounted(() => {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData(["user"]);
-  user = data.user;
+  user = data;
 });
 </script>
 <template>

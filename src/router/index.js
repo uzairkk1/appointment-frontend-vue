@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import VerifyEmailView from "../views/VerifyEmailView.vue";
+import DoctorProfileView from "../views/DoctorProfileView.vue";
 
 import HomeLayout from "../layouts/HomeLayout.vue";
 import AuthLayout from "../layouts/AuthLayout.vue";
@@ -34,9 +35,16 @@ const router = createRouter({
     },
     {
       path: "/register",
+      alias: "/register/doctor",
       name: "register",
       component: RegisterView,
       meta: { layout: AuthLayout },
+    },
+    {
+      path: "/update/doctor",
+      name: "doctor-profile",
+      component: DoctorProfileView,
+      meta: { layout: HomeLayout, requiresAuth: true },
     },
     {
       path: "/verify/:token",
