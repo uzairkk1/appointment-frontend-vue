@@ -1,12 +1,14 @@
 <script setup>
-import { defineEmits, defineProps, onMounted } from "vue";
-import { useQueryClient } from "@tanstack/vue-query";
+import { defineEmits, defineProps } from "vue";
+import { useUser } from "../composables/useUser";
 const emit = defineEmits(["updateNav"]);
 const props = defineProps(["isMdUp", "open", "rails"]);
 
 const updateNavState = (state) => {
   emit("updateNav", state);
 };
+
+const { user, isLoading, isError } = useUser();
 
 const getDrawerVal = () => {
   return props.isMdUp || props.open;
@@ -29,7 +31,7 @@ const menuItems = [
     icon: "mdi-card-account-details-outline",
     title: "Apply for Doctor",
     value: "/update/doctor",
-    show: true,
+    show: () => user.value.role === "DOCTOR",
   },
   {
     id: 0,
@@ -39,15 +41,24 @@ const menuItems = [
     show: true,
   },
 ];
-let user = { name: "test", email: "test" };
-onMounted(() => {
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData(["user"]);
-  user = data;
-});
+// onMounted(() => {
+//   const queryClient = useQueryClient();
+//   const data = queryClient.getQueryData(["user"]);
+//   user = data;
+// });
 </script>
 <template>
+  <div class="w-100 h-100 d-flex align-center justify-center" v-if="isLoading">
+    <v-progress-circular
+      :size="70"
+      :width="7"
+      color="primary"
+      indeterminate
+    ></v-progress-circular>
+  </div>
+
   <v-navigation-drawer
+    v-else
     :model-value="getDrawerVal()"
     expand-on-hover
     :rail="rails"
@@ -68,6 +79,7 @@ onMounted(() => {
     <v-list density="compact" nav>
       <template :key="item.value" v-for="item in menuItems">
         <v-list-item
+          v-if="typeof item.show == 'function' ? item.show() : item.show"
           active-class="active-route"
           :prepend-icon="item.icon"
           :value="item.value"
