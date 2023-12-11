@@ -1,13 +1,25 @@
-import { useMutation } from "@tanstack/vue-query";
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { updateDocProfile } from "../services/apiAuth";
 import { useSnackbar } from "./useSnackbar";
 // by convention, composable function names start with "use"
 export function useUpdateDocProfile() {
   const { showSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
 
   const { mutate: updateDoctorProfile, isPending } = useMutation({
     mutationFn: updateDocProfile,
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
+      queryClient.setQueryData(["user"], { ...data.data });
+
+      let lsData = JSON.parse(localStorage.getItem("user_details"));
+      //store user details in LS for persistance
+      lsData.user = { ...data.data };
+
+      localStorage.setItem(
+        "user_details",
+        JSON.stringify({ accessToken: lsData?.accessToken, user: lsData?.user })
+      );
+
       showSnackbar({
         text: "Your profile has been updated successfully",
         color: "green",
