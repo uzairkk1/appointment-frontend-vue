@@ -25,11 +25,11 @@ const menuItems = [
     icon: "mdi-doctor",
     title: "Doctors",
     value: "/doctors",
-    show: true,
+    show: () => user.value.role === "USER",
   },
   {
     icon: "mdi-card-account-details-outline",
-    title: "Apply for Doctor",
+    title: "Doc Profile",
     value: "/update/doctor",
     show: () => user.value.role === "DOCTOR",
   },
