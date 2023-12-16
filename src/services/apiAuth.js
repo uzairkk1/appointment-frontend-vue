@@ -49,7 +49,7 @@ export async function registerDoctor({
 }
 
 export async function updateDocProfile({ id, bodyData }) {
-  return await axios.post(`/users//doctor/update/${id}`, {
+  return await axios.post(`/users/doctors/${id}`, {
     ...bodyData,
   });
 }

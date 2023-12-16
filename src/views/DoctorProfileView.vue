@@ -61,7 +61,7 @@ const { handleSubmit, resetForm } = useForm({
 //   }
 // });
 
-const select = ref(1);
+const select = ref(2);
 
 const startTime = ref("");
 const endTime = ref("");
@@ -96,18 +96,18 @@ onMounted(() => {
     docTimingsSelected.value = timings;
     select.value = user.value.timings.length
       ? user.value.timings[0].dayIndex
-      : 1;
+      : 2;
   }
 });
 
 const items = [
-  { text: "Monday", value: 1 },
-  { text: "Tuesday", value: 2 },
-  { text: "Wednesday", value: 3 },
-  { text: "Thursday", value: 4 },
-  { text: "Friday", value: 5 },
-  { text: "Saturday", value: 6 },
-  { text: "Sunday", value: 7 },
+  { text: "Monday", value: 2 },
+  { text: "Tuesday", value: 3 },
+  { text: "Wednesday", value: 4 },
+  { text: "Thursday", value: 5 },
+  { text: "Friday", value: 6 },
+  { text: "Saturday", value: 7 },
+  { text: "Sunday", value: 1 },
 ];
 
 const isDirty = useIsFormDirty();
@@ -126,7 +126,7 @@ const disableAdd = computed(() => {
 });
 
 const docTimingsSelected = ref({
-  1: {
+  2: {
     value: [],
   },
 });

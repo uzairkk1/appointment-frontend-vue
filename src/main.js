@@ -13,6 +13,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import "@mdi/font/css/materialdesignicons.css";
+import "v-calendar/style.css";
 
 const vuetify = createVuetify({
   components,
@@ -36,6 +37,7 @@ function startApp() {
   app.provide("queryClient", queryClient);
   app.use(createPinia());
   app.use(VueQueryPlugin, { queryClient });
+  // app.use(setupCalendar, {});
 
   app.use(vuetify);
   app.use(router);
