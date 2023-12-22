@@ -68,7 +68,7 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/DoctorsListView.vue"),
-      meta: { layout: HomeLayout },
+      meta: { layout: HomeLayout, requiresAuth: true },
     },
     {
       path: "/appointments/book",
@@ -77,7 +77,7 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/BookAppointmentView.vue"),
-      meta: { layout: HomeLayout },
+      meta: { layout: HomeLayout, requiresAuth: true },
     },
   ],
 });

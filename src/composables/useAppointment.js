@@ -9,11 +9,14 @@ import { useSnackbar } from "./useSnackbar";
 // by convention, composable function names start with "use"
 export function useCreateAppointment() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
 
   const { mutate: mutateCreateAppointment, isPending } = useMutation({
     mutationFn: createAppointment,
+    // appointments
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["appointments"] });
       showSnackbar({
         text: "Appointment booked successfully",
         color: "green",

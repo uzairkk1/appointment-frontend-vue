@@ -17,6 +17,17 @@ export async function login({ email, password }) {
 
   //   return data;
 }
+export async function logout() {
+  return await axios.post(
+    `/users/auth/logout`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+
+  //   return data;
+}
 export async function register({ name, email, password, confirmPassword }) {
   return await axios.post(
     `/users/auth/register`,

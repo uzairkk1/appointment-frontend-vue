@@ -88,6 +88,7 @@ const loading = ref(false);
             :readonly="loading"
             clearable
             label="Password"
+            type="Password"
             placeholder="Enter your password"
           ></v-text-field>
 
@@ -96,6 +97,7 @@ const loading = ref(false);
             :error-messages="confirmPassword.errorMessage.value"
             :readonly="loading"
             clearable
+            type="Password"
             label="Confirm Password"
             placeholder="Confirm your password"
           ></v-text-field>
@@ -114,6 +116,10 @@ const loading = ref(false);
             Sign Up
           </v-btn>
         </v-form>
+
+        <v-btn size="small" class="mt-5" :to="{ name: 'login' }">
+          Back to Login
+        </v-btn>
       </v-card>
     </v-sheet>
   </div>

@@ -1,6 +1,13 @@
 <script setup>
 import { defineEmits, defineProps } from "vue";
 import { useUser } from "../composables/useUser";
+import { useMutation } from "@tanstack/vue-query";
+import { useSnackbar } from "../composables/useSnackbar";
+import { useQueryClient } from "@tanstack/vue-query";
+import { useRouter } from "vue-router";
+import axios from "../axios";
+import { logout } from "../services/apiAuth";
+
 const emit = defineEmits(["updateNav"]);
 const props = defineProps(["isMdUp", "open", "rails"]);
 
@@ -9,6 +16,37 @@ const updateNavState = (state) => {
 };
 
 const { user, isLoading, isError } = useUser();
+
+const { showSnackbar } = useSnackbar();
+const queryClient = useQueryClient();
+const router = useRouter();
+
+const { mutate: mutateLogout, isPending: isPendingLogout } = useMutation({
+  mutationFn: logout,
+  onSuccess: ({ data }) => {
+    queryClient.setQueryData(["user"], null);
+    //store user details in LS for persistance
+    localStorage.removeItem("user_details");
+
+    delete axios.defaults.headers.common["Authorization"];
+
+    showSnackbar({
+      text: "Successfully Logged out",
+      color: "green",
+    });
+    setTimeout(() => {
+      router.push("/login");
+    }, 1000);
+  },
+  onError: (err) => {
+    const error = err.response.data;
+    showSnackbar({
+      text: error.message,
+      color: "red",
+    });
+    console.log("logout error: ", err);
+  },
+});
 
 const getDrawerVal = () => {
   return props.isMdUp || props.open;
@@ -37,7 +75,7 @@ const menuItems = [
     id: 0,
     icon: "mdi-logout",
     title: "Logout",
-    value: "/logout",
+    action: mutateLogout,
     show: true,
   },
 ];
@@ -79,12 +117,27 @@ const menuItems = [
     <v-list density="compact" nav>
       <template :key="item.value" v-for="item in menuItems">
         <v-list-item
-          v-if="typeof item.show == 'function' ? item.show() : item.show"
+          v-if="
+            typeof item.show == 'function'
+              ? item.show()
+              : item.show && item.value
+          "
           active-class="active-route"
           :prepend-icon="item.icon"
           :value="item.value"
           :title="item.title"
-          :to="item.value"
+          :to="item.value ? item.value : undefined"
+          @click="item.action ? item.action : undefined"
+          :exact="true"
+        >
+        </v-list-item>
+        <v-list-item
+          v-else-if="item.action"
+          active-class="active-route"
+          :prepend-icon="item.icon"
+          :value="item.value"
+          :title="item.title"
+          @click="item.action"
           :exact="true"
         >
         </v-list-item>

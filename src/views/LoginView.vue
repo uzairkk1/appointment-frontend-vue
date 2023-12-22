@@ -64,6 +64,7 @@ const loading = ref(false);
             :error-messages="password.errorMessage.value"
             :readonly="loading"
             clearable
+            type="password"
             label="Password"
             placeholder="Enter your password"
           ></v-text-field>
@@ -88,6 +89,11 @@ const loading = ref(false);
             </template> -->
           </v-btn>
         </v-form>
+
+        <div class="d-flex mt-5 align-content-center">
+          Don't have an account ?
+          <v-btn size="small" :to="{ name: 'register' }"> Register </v-btn>
+        </div>
       </v-card>
     </v-sheet>
   </div>

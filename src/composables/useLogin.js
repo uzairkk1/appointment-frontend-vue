@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 import { login } from "../services/apiAuth";
 import { useSnackbar } from "./useSnackbar";
+import axios from "../axios";
 // by convention, composable function names start with "use"
 export function useLogin() {
   const router = useRouter();
@@ -17,6 +18,10 @@ export function useLogin() {
         "user_details",
         JSON.stringify({ accessToken: data?.accessToken, user: data?.user })
       );
+
+      axios.defaults.headers.common["Authorization"] =
+        `Bearer ${data?.accessToken}` || "";
+
       showSnackbar({
         text: "Login successfull, you will be redirected to dashboard shortly",
         color: "green",
